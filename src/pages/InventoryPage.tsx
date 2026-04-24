@@ -4,7 +4,6 @@ import { ArrowLeft, Warehouse, Edit2, Trash2, Search, LayoutGrid, History, Arrow
 import type { Product, Warehouse as WH, Movement } from '../lib/supabase';
 
 type View = 'warehouses' | 'warehouse-detail' | 'product-detail';
-type DisplayMode = 'grid' | 'list';
 
 export const InventoryPage = () => {
   const [products, setProducts] = useState<Product[]>([]);

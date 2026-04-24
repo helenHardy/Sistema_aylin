@@ -457,7 +457,7 @@ export const SalesPage = () => {
       )}
 
       {/* OTHER MODALS */}
-      {modal === 'clients-select' && <ModalWrap title="Seleccionar Cliente" onClose={()=>setModal('new-sale')}><ClientSearch clients={clients} onSelect={c=>{setForm({...form, client: c}); setModal('new-sale');}} onNewClient={() => {setEditingClient(null); setModal('client-form');}} /></ModalWrap>}
+      {modal === 'clients-select' && <ModalWrap title="Seleccionar Cliente" onClose={()=>setModal('new-sale')}><ClientSearch clients={clients} onSelect={(c: any)=>{setForm({...form, client: c}); setModal('new-sale');}} onNewClient={() => {setEditingClient(null); setModal('client-form');}} /></ModalWrap>}
       {modal === 'client-form' && <ModalWrap title={editingClient ? 'Editar Cliente' : 'Nuevo Cliente'} onClose={()=>setModal(modal === 'client-form' && editingClient ? 'clients' : 'clients-select')}><ClientForm existingClient={editingClient} onSuccess={(c: any) => { load(); if (!editingClient) { setForm({...form, client: c}); setModal('new-sale'); } else { setModal(null); } }} /></ModalWrap>}
       {modal === 'client-detail' && selClientDetail && <ModalWrap title={selClientDetail.nombre} onClose={()=>setModal(null)}><ClientDetailView client={selClientDetail} sales={sales} payments={payments} getBalance={getClientBalance} onPay={() => setModal('pay')} /></ModalWrap>}
       {modal === 'pay' && selClientDetail && <ModalWrap title={`Cobro: ${selClientDetail.nombre}`} onClose={()=>setModal(null)}><PaymentForm onSubmit={async (m: any, met: any) => {
