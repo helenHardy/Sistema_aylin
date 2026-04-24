@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { ShoppingBag, Search, Plus, Calendar, ChevronRight, X, CheckCircle2, Wallet, QrCode, Layout, Users, ArrowUpRight, DollarSign, History, ArrowDownCircle, ArrowUpCircle, Phone, Edit2, Trash2, UserPlus, Hash, ArrowLeft, ShoppingCart, TrendingUp, PiggyBank, CreditCard, ArrowRight } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import type { Client, Staff, Sale } from '../lib/supabase';
