@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react';
-import { ShoppingBag, Search, Plus, Calendar, ChevronRight, X, CheckCircle2, Wallet, QrCode, Layout, Users, ArrowUpRight, DollarSign, History, ArrowDownCircle, ArrowUpCircle, Phone, Edit2, Trash2, UserPlus, Hash, ArrowLeft, ShoppingCart, TrendingUp, PiggyBank, CreditCard, ArrowRight } from 'lucide-react';
+import { ShoppingBag, Search, Plus, Calendar, ChevronRight, X, CheckCircle2, Wallet, QrCode, Layout, Users, ArrowUpRight, DollarSign, History, ArrowDownCircle, ArrowUpCircle, Phone, Edit2, Trash2, UserPlus, Hash, TrendingUp, CreditCard, ArrowRight } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-import type { Client, Staff, Sale } from '../lib/supabase';
+import type { Client, Staff } from '../lib/supabase';
 
 type View = 'menu' | 'history' | 'clients';
 
@@ -82,7 +81,7 @@ export const SalesPage = () => {
       const [year, month, day] = form.fecha.split('-').map(Number);
       const saleDate = new Date(year, month - 1, day, now.getHours(), now.getMinutes(), now.getSeconds());
 
-      const { data: sale, error: sErr } = await supabase.from('sales').insert([{
+      const { error: sErr } = await supabase.from('sales').insert([{
         client_id: form.client.id,
         fecha: saleDate.toISOString(),
         total: parseFloat(form.total),
@@ -126,14 +125,14 @@ export const SalesPage = () => {
                     paymentsToday.filter(p => p.metodo === 'efectivo').reduce((a, b) => a + (b.monto || 0), 0);
 
   const todayQR = salesToday.filter(s => s.tipo_pago === 'qr').reduce((a, b) => a + (b.total || 0), 0) +
-                  paymentsToday.filter(p => p.metodo === 'qr').reduce((a, b) => a + (b.monto || 0), 0);
+                  paymentsToday.filter((p: any) => p.metodo === 'qr').reduce((a, b) => a + (b.monto || 0), 0);
 
   // Totales de Ventas Directas para el Menú
   const todayDirectCash = salesToday.filter(s => s.tipo_pago === 'efectivo').reduce((a,b)=>a+(b.total||0), 0);
   const todayDirectQR = salesToday.filter(s => s.tipo_pago === 'qr').reduce((a,b)=>a+(b.total||0), 0);
   
   // Deuda Total (Suma de todos los saldos de clientes)
-  const totalGlobalDebt = clients.reduce((sum, c) => sum + getClientBalance(c.id), 0);
+  const totalGlobalDebt = clients.reduce((sum, c: any) => sum + getClientBalance(c.id), 0);
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-6 animate-in fade-in duration-700 pb-32">
@@ -308,7 +307,7 @@ export const SalesPage = () => {
                           <p className="text-[10px] font-black text-slate-400">
                             {(() => {
                               // Evitar desfase de zona horaria al mostrar solo la fecha
-                              const [datePart, timePart] = m.fecha.split('T');
+                              const [datePart] = m.fecha.split('T');
                               const [y, mm, d] = datePart.split('-');
                               return `${d}/${mm}/${y}`;
                             })()}
@@ -460,7 +459,7 @@ export const SalesPage = () => {
       {modal === 'clients-select' && <ModalWrap title="Seleccionar Cliente" onClose={()=>setModal('new-sale')}><ClientSearch clients={clients} onSelect={c=>{setForm({...form, client: c}); setModal('new-sale');}} onNewClient={() => {setEditingClient(null); setModal('client-form');}} /></ModalWrap>}
       {modal === 'client-form' && <ModalWrap title={editingClient ? 'Editar Cliente' : 'Nuevo Cliente'} onClose={()=>setModal(modal === 'client-form' && editingClient ? 'clients' : 'clients-select')}><ClientForm existingClient={editingClient} onSuccess={(c: any) => { load(); if (!editingClient) { setForm({...form, client: c}); setModal('new-sale'); } else { setModal(null); } }} /></ModalWrap>}
       {modal === 'client-detail' && selClientDetail && <ModalWrap title={selClientDetail.nombre} onClose={()=>setModal(null)}><ClientDetailView client={selClientDetail} sales={sales} payments={payments} getBalance={getClientBalance} onPay={() => setModal('pay')} /></ModalWrap>}
-      {modal === 'pay' && selClientDetail && <ModalWrap title={`Cobro: ${selClientDetail.nombre}`} onClose={()=>setModal(null)}><PaymentForm onSubmit={async (m, met) => {
+      {modal === 'pay' && selClientDetail && <ModalWrap title={`Cobro: ${selClientDetail.nombre}`} onClose={()=>setModal(null)}><PaymentForm onSubmit={async (m: any, met: any) => {
         try {
           await supabase.from('payments').insert([{ client_id: selClientDetail.id, monto: parseFloat(m), fecha: new Date().toISOString(), metodo: met }]);
           alert('Pago registrado'); setModal(null); load();
@@ -471,7 +470,6 @@ export const SalesPage = () => {
   );
 };
 
-const HistoryView = () => <div>Historial...</div>;
 const ClientDetailView = ({ client, sales, payments, getBalance, onPay }: any) => (
   <div className="space-y-6">
     <div className="bg-slate-900 p-8 rounded-[2.5rem] text-center border-b-4 border-brand shadow-xl relative overflow-hidden">

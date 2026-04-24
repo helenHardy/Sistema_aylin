@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Save, Globe, Phone, Settings as SettingsIcon, CheckCircle2, ArrowLeft, ExternalLink, Trash2, Lock, ShieldCheck } from 'lucide-react';
+import { Save, Globe, Phone, Settings as SettingsIcon, CheckCircle2, ExternalLink, Trash2, Lock, ShieldCheck } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 export const SettingsPage = () => {
@@ -18,7 +18,7 @@ export const SettingsPage = () => {
 
   const load = async () => {
     setLoading(true);
-    const { data, error } = await supabase.from('settings').select('*').single();
+    const { data } = await supabase.from('settings').select('*').single();
     if (data) setForm(data);
     setLoading(false);
   };

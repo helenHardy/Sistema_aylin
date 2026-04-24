@@ -62,3 +62,9 @@ export type Payment = {
   metodo: 'efectivo' | 'qr';
   fecha: string;
 };
+
+export type Staff = {
+  id: string;
+  nombre: string;
+  created_at?: string;
+};

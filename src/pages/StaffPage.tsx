@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { UserCog, Plus, Search, Trash2, Edit2, Check, X, UserPlus2 } from 'lucide-react';
+import { Search, Trash2, Edit2, X, UserPlus2 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 export const StaffPage = () => {
