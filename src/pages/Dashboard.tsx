@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Package, ShoppingCart, ArrowRight, TrendingUp, Users, Wallet, Layout, ChevronRight, UserCircle } from 'lucide-react';
+import { Package, ShoppingCart, TrendingUp, Users, Wallet, Layout, ChevronRight, UserCircle } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 export const Dashboard = () => {

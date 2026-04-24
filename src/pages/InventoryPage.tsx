@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Package, Plus, Minus, ArrowLeft, Warehouse, ChevronRight, X, Upload, Image as ImageIcon, PlusCircle, Edit2, Trash2, Search, Filter, LayoutGrid, List, AlertCircle, Check, Box, Tag, History, ArrowUpRight, ArrowDownLeft, Camera } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
+import { ArrowLeft, Warehouse, Edit2, Trash2, Search, LayoutGrid, History, ArrowUpRight, ArrowDownLeft, Image as ImageIcon } from 'lucide-react';
 import type { Product, Warehouse as WH, Movement } from '../lib/supabase';
 
 type View = 'warehouses' | 'warehouse-detail' | 'product-detail';
