@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { ArrowLeft, Warehouse, Edit2, Trash2, Search, LayoutGrid, History, ArrowUpRight, ArrowDownLeft, Image as ImageIcon } from 'lucide-react';
+import { ArrowLeft, Warehouse, Edit2, Trash2, Search, LayoutGrid, History, ArrowUpRight, ArrowDownLeft, Image as ImageIcon, Plus, ChevronRight, Camera, Check, X } from 'lucide-react';
 import type { Product, Warehouse as WH, Movement } from '../lib/supabase';
 
 type View = 'warehouses' | 'warehouse-detail' | 'product-detail';
@@ -16,7 +16,6 @@ export const InventoryPage = () => {
   const [loading, setLoading] = useState(true);
 
   const [view, setView] = useState<View>('warehouses');
-  const [displayMode, setDisplayMode] = useState<DisplayMode>('grid');
   const [searchQuery, setSearchQuery] = useState('');
   const [selWarehouse, setSelWarehouse] = useState<WH | null>(null);
   const [selProduct, setSelProduct] = useState<Product | null>(null);

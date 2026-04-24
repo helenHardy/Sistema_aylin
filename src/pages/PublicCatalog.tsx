@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Search, Filter, ShoppingCart, ShoppingBag, X, Send, Globe, LogIn, Trash2, Plus, Minus } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Search, ShoppingCart, ShoppingBag, X, Send, Globe, LogIn, Trash2, Plus, Minus } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import type { Product, Variant } from '../lib/supabase';
 import { Link } from 'react-router-dom';
