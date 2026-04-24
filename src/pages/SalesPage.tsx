@@ -1,4 +1,5 @@
-import { ShoppingBag, Search, Plus, Calendar, ChevronRight, X, CheckCircle2, Wallet, QrCode, Layout, Users, ArrowUpRight, DollarSign, History, ArrowDownCircle, ArrowUpCircle, Phone, Edit2, Trash2, UserPlus, Hash, TrendingUp, CreditCard, ArrowRight } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { ShoppingBag, Search, Plus, Calendar, ChevronRight, X, CheckCircle2, Wallet, QrCode, Layout, Users, DollarSign, History, ArrowDownCircle, ArrowUpCircle, Phone, Edit2, Trash2, UserPlus, TrendingUp, ArrowRight } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import type { Client, Staff } from '../lib/supabase';
 
