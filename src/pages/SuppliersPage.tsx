@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Truck, Plus, Search, Trash2, Edit2, X, ChevronRight, DollarSign, History, ArrowDownCircle, ArrowUpCircle, Wallet, QrCode, CreditCard, ShoppingCart, Tag, AlertCircle, CheckCircle2, Phone, ArrowLeft, PlusCircle, MinusCircle, Eye } from 'lucide-react';
+import { Truck, Plus, Search, X, ChevronRight, DollarSign, History, ArrowDownCircle, ArrowUpCircle, Wallet, QrCode, CreditCard, ShoppingCart, Tag, CheckCircle2, Phone, ArrowLeft, PlusCircle, MinusCircle, Eye } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import type { Supplier, SupplierDebt, SupplierPayment } from '../lib/supabase';
 
