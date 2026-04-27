@@ -68,3 +68,32 @@ export type Staff = {
   nombre: string;
   created_at?: string;
 };
+
+export type Supplier = {
+  id: string;
+  nombre: string;
+  telefono?: string;
+  created_at: string;
+};
+
+export type SupplierDebt = {
+  id: string;
+  supplier_id: string;
+  monto_total: number;
+  descuento: number;
+  nota?: string;
+  items: any[];
+  fecha: string;
+  created_at: string;
+};
+
+export type SupplierPayment = {
+  id: string;
+  supplier_id: string;
+  monto_total: number;
+  monto_efectivo: number;
+  monto_qr: number;
+  metodo: 'efectivo' | 'qr' | 'mixto';
+  fecha: string;
+  created_at: string;
+};

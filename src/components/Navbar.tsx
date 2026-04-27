@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShoppingBag, Package, LayoutDashboard, LogOut, Menu, X, UserCog, Settings } from 'lucide-react';
+import { ShoppingBag, Package, LayoutDashboard, LogOut, Menu, X, UserCog, Settings, Truck } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 
@@ -10,6 +10,7 @@ export const Navbar = ({ user }: { user: any }) => {
   const navItems = [
     { id: 'dashboard', label: 'Panel', icon: LayoutDashboard, path: '/dashboard' },
     { id: 'inventory', label: 'Inventario', icon: Package, path: '/inventory' },
+    { id: 'suppliers', label: 'Proveedores', icon: Truck, path: '/suppliers' },
     { id: 'sales', label: 'Ventas', icon: ShoppingBag, path: '/sales' },
     { id: 'staff', label: 'Personal', icon: UserCog, path: '/staff' },
     { id: 'settings', label: 'Ajustes', icon: Settings, path: '/settings' },

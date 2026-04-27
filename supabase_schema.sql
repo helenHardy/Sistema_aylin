@@ -106,3 +106,43 @@ CREATE POLICY "Enable manage for all" ON payments FOR ALL USING (true) WITH CHEC
 
 CREATE POLICY "Enable read for all" ON settings FOR SELECT USING (true);
 CREATE POLICY "Enable manage for all" ON settings FOR ALL USING (true) WITH CHECK (true);
+
+-- === PROVEEDORES ===
+CREATE TABLE suppliers (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  nombre TEXT NOT NULL,
+  telefono TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE supplier_debts (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  supplier_id UUID REFERENCES suppliers(id) ON DELETE CASCADE,
+  monto_total DECIMAL(12,2) NOT NULL DEFAULT 0,
+  descuento DECIMAL(12,2) NOT NULL DEFAULT 0,
+  nota TEXT,
+  items JSONB DEFAULT '[]', -- Para guardar nombre, cant, costo de productos referencia
+  fecha TIMESTAMPTZ DEFAULT NOW(),
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE supplier_payments (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  supplier_id UUID REFERENCES suppliers(id) ON DELETE CASCADE,
+  monto_total DECIMAL(12,2) NOT NULL DEFAULT 0,
+  monto_efectivo DECIMAL(12,2) NOT NULL DEFAULT 0,
+  monto_qr DECIMAL(12,2) NOT NULL DEFAULT 0,
+  metodo TEXT NOT NULL, -- efectivo, qr, mixto
+  fecha TIMESTAMPTZ DEFAULT NOW(),
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- RLS para Proveedores
+ALTER TABLE suppliers ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Allow all for suppliers" ON suppliers FOR ALL USING (true) WITH CHECK (true);
+
+ALTER TABLE supplier_debts ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Allow all for supplier_debts" ON supplier_debts FOR ALL USING (true) WITH CHECK (true);
+
+ALTER TABLE supplier_payments ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Allow all for supplier_payments" ON supplier_payments FOR ALL USING (true) WITH CHECK (true);

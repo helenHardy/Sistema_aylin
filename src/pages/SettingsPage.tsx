@@ -192,24 +192,38 @@ export const SettingsPage = () => {
         <div className="p-6 bg-rose-50 rounded-[2rem] border border-rose-100 mb-8">
           <p className="text-rose-600 font-bold text-sm leading-relaxed">
             <strong className="block mb-2 text-rose-700 text-base">⚠️ ¡ATENCIÓN! ESTA ACCIÓN ES IRREVERSIBLE</strong>
-            Esta acción eliminará permanentemente todas las **ventas, pagos, productos, depósitos y clientes**. 
+            Esta acción eliminará permanentemente todas las **ventas, pagos, productos, depósitos, clientes, proveedores y personal**. 
             El acceso del administrador y la configuración de redes sociales **NO** se verán afectados.
           </p>
         </div>
 
         <button
           onClick={async () => {
-            if (confirm('¿ESTÁS ABSOLUTAMENTE SEGURO? Se borrarán todos los datos operativos. No podrás recuperar esta información.')) {
+            if (confirm('¿ESTÁS ABSOLUTAMENTE SEGURO? Se borrarán todos los datos operativos y de proveedores. No podrás recuperar esta información.')) {
               const confirmText = prompt('Para confirmar el borrado total, escribe: BORRAR TODO');
               if (confirmText === 'BORRAR TODO') {
                 try {
                   setSaving(true);
-                  // Orden de borrado para respetar claves foráneas
+                  // Orden de borrado para respetar claves foráneas (Hijas primero)
+                  // 1. Movimientos y Detalle de Ventas (si hubiera tabla aparte, aquí van)
+                  await supabase.from('movements').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+                  
+                  // 2. Pagos y Ventas
                   await supabase.from('payments').delete().neq('id', '00000000-0000-0000-0000-000000000000');
                   await supabase.from('sales').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+                  
+                  // 3. Proveedores (Hijos primero)
+                  await supabase.from('supplier_payments').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+                  await supabase.from('supplier_debts').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+                  await supabase.from('suppliers').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+                  
+                  // 4. Entidades Principales
                   await supabase.from('products').delete().neq('id', '00000000-0000-0000-0000-000000000000');
-                  await supabase.from('deposits').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+                  await supabase.from('warehouses').delete().neq('id', '00000000-0000-0000-0000-000000000000');
                   await supabase.from('clients').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+                  
+                  // 5. Personal (Excepto Admin si lo hubiera, pero aquí borramos nombres de responsables)
+                  await supabase.from('staff').delete().neq('id', '00000000-0000-0000-0000-000000000000');
                   
                   alert('Sistema reseteado con éxito. El sistema se reiniciará.');
                   window.location.reload();

@@ -7,6 +7,7 @@ import { Login } from './pages/Login';
 import { Dashboard } from './pages/Dashboard';
 import { InventoryPage } from './pages/InventoryPage';
 import { SalesPage } from './pages/SalesPage';
+import { SuppliersPage } from './pages/SuppliersPage';
 import { StaffPage } from './pages/StaffPage';
 import { SettingsPage } from './pages/SettingsPage';
 
@@ -50,6 +51,10 @@ function App() {
             <Route 
               path="/inventory" 
               element={session ? <InventoryPage /> : <Navigate to="/login" />} 
+            />
+            <Route 
+              path="/suppliers" 
+              element={session ? <SuppliersPage /> : <Navigate to="/login" />} 
             />
             <Route 
               path="/sales" 
