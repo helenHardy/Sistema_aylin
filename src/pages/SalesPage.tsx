@@ -114,19 +114,25 @@ export const SalesPage = () => {
 
   if (loading) return <div className="flex justify-center py-20"><div className="w-10 h-10 border-3 border-slate-200 border-t-brand rounded-full animate-spin"></div></div>;
 
+  // Función para obtener la fecha local YYYY-MM-DD de una cadena ISO
+  const toLocalDateStr = (isoStr: string) => {
+    const d = new Date(isoStr);
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  };
+
   const todayStr = selectedDate;
   
-  // Filtrar movimientos estrictamente de la fecha seleccionada
-  const salesToday = sales.filter(s => s.fecha.startsWith(todayStr));
-  const paymentsToday = payments.filter(p => p.fecha.startsWith(todayStr));
+  // Filtrar movimientos comparando la fecha local del registro con la fecha seleccionada
+  const salesToday = sales.filter(s => toLocalDateStr(s.fecha) === todayStr);
+  const paymentsToday = payments.filter(p => toLocalDateStr(p.fecha) === todayStr);
 
-  const todaySalesVal = salesToday.reduce((a, b) => a + (b.total || 0), 0);
+  const todaySalesVal = salesToday.reduce((a, b) => a + (Number(b.total) || 0), 0);
   
-  const todayCash = salesToday.filter(s => s.tipo_pago === 'efectivo').reduce((a, b) => a + (b.total || 0), 0) +
-                    paymentsToday.filter(p => p.metodo === 'efectivo').reduce((a, b) => a + (b.monto || 0), 0);
+  const todayCash = salesToday.filter(s => s.tipo_pago === 'efectivo').reduce((a, b) => a + (Number(b.total) || 0), 0) +
+                    paymentsToday.filter(p => p.metodo === 'efectivo').reduce((a, b) => a + (Number(b.monto) || 0), 0);
 
-  const todayQR = salesToday.filter(s => s.tipo_pago === 'qr').reduce((a, b) => a + (b.total || 0), 0) +
-                  paymentsToday.filter((p: any) => p.metodo === 'qr').reduce((a, b) => a + (b.monto || 0), 0);
+  const todayQR = salesToday.filter(s => s.tipo_pago === 'qr').reduce((a, b) => a + (Number(b.total) || 0), 0) +
+                  paymentsToday.filter((p: any) => p.metodo === 'qr').reduce((a, b) => a + (Number(b.monto) || 0), 0);
 
   // Totales de Ventas Directas para el Menú
   const todayDirectCash = salesToday.filter(s => s.tipo_pago === 'efectivo').reduce((a,b)=>a+(b.total||0), 0);
@@ -297,8 +303,8 @@ export const SalesPage = () => {
                 <tbody className="divide-y divide-slate-50">
                   {(() => {
                     const movements = [
-                      ...sales.filter(s => s.fecha.startsWith(todayStr)).map(s => ({ ...s, type: 'sale' })),
-                      ...payments.filter(p => p.fecha.startsWith(todayStr) && !sales.find(s => s.client_id === p.client_id && s.fecha === p.fecha))
+                      ...sales.filter(s => toLocalDateStr(s.fecha) === todayStr).map(s => ({ ...s, type: 'sale' })),
+                      ...payments.filter(p => toLocalDateStr(p.fecha) === todayStr && !sales.find(s => s.client_id === p.client_id && s.fecha === p.fecha))
                                 .map(p => ({ ...p, type: 'payment', total: p.monto, clients: clients.find(c => c.id === p.client_id) }))
                     ].sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime());
 
@@ -306,12 +312,7 @@ export const SalesPage = () => {
                       <tr key={m.id || idx} className="hover:bg-slate-50/30 transition-all group">
                         <td className="px-8 py-5">
                           <p className="text-[10px] font-black text-slate-400">
-                            {(() => {
-                              // Evitar desfase de zona horaria al mostrar solo la fecha
-                              const [datePart] = m.fecha.split('T');
-                              const [y, mm, d] = datePart.split('-');
-                              return `${d}/${mm}/${y}`;
-                            })()}
+                            {new Date(m.fecha).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })}
                             <span className="text-slate-200 ml-1">
                               {new Date(m.fecha).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                             </span>
@@ -508,7 +509,7 @@ const ClientDetailView = ({ client, sales, payments, getBalance, onPay }: any) =
                     )}
                   </div>
                 )}
-                <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">{new Date(item.fecha).toLocaleDateString()}</p>
+                <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">{new Date(item.fecha).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })}</p>
               </div>
             </div>
             <p className={`font-black text-base ${item.entryType === 'payment' ? 'text-emerald-500' : 'text-slate-900'}`}>{item.entryType === 'payment' ? '+' : ''}{item.total || item.monto} <span className="text-[10px] text-slate-300">Bs.</span></p>
