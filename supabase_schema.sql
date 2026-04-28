@@ -51,6 +51,7 @@ CREATE TABLE sales (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   client_id UUID REFERENCES clients(id) ON DELETE CASCADE,
   guia TEXT,
+  descripcion TEXT,
   fecha TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
   responsable TEXT NOT NULL,
   tipo_pago TEXT CHECK (tipo_pago IN ('efectivo', 'qr', 'mixto', 'deuda')) NOT NULL,

@@ -31,7 +31,8 @@ export const SalesPage = () => {
     montoEfectivo: '',
     montoQR: '',
     adelanto: '',
-    metodoAdelanto: 'efectivo' as 'efectivo' | 'qr'
+    metodoAdelanto: 'efectivo' as 'efectivo' | 'qr',
+    descripcion: ''
   });
 
   const [saving, setSaving] = useState(false);
@@ -87,6 +88,7 @@ export const SalesPage = () => {
         fecha: saleDate.toISOString(),
         total: parseFloat(form.total),
         guia: guiaFinal,
+        descripcion: form.descripcion,
         tipo_pago: form.metodo,
         responsable: form.responsable
       }]).select().single();
@@ -108,7 +110,8 @@ export const SalesPage = () => {
   const resetForm = () => {
     setForm({
       client: null, fecha: getLocalToday(), total: '', metodo: 'efectivo',
-      guia: '', nroGuia: '', responsable: '', montoEfectivo: '', montoQR: '', adelanto: '', metodoAdelanto: 'efectivo'
+      guia: '', nroGuia: '', responsable: '', montoEfectivo: '', montoQR: '', adelanto: '', metodoAdelanto: 'efectivo',
+      descripcion: ''
     });
   };
 
@@ -338,7 +341,10 @@ export const SalesPage = () => {
                             )}
                           </div>
                         </td>
-                        <td className="px-8 py-5 text-[10px] font-bold text-slate-400 uppercase">{m.guia || m.nro_comprobante || '—'}</td>
+                        <td className="px-8 py-5 text-[10px] font-bold text-slate-400 uppercase">
+                          {m.guia || m.nro_comprobante || '—'}
+                          {m.descripcion && <p className="mt-1 text-[9px] font-bold text-brand normal-case tracking-normal italic opacity-80">{m.descripcion}</p>}
+                        </td>
                         <td className={`px-8 py-5 text-right font-black text-lg ${m.type === 'payment' ? 'text-violet-600' : 'text-slate-900'}`}>Bs. {m.total.toLocaleString()}</td>
                       </tr>
                     ));
@@ -445,6 +451,16 @@ export const SalesPage = () => {
               </div>
             )}
 
+            <div className="space-y-1">
+              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">Descripción (Opcional)</label>
+              <textarea 
+                placeholder="Escribe detalles de la venta, notas adicionales..." 
+                value={form.descripcion} 
+                onChange={e=>setForm({...form, descripcion: e.target.value})} 
+                className="w-full py-4 px-5 rounded-2xl border-2 border-slate-100 bg-slate-50/30 font-bold text-sm outline-none focus:border-brand transition-all resize-none h-24"
+              />
+            </div>
+
             <div className="pt-2">
               <label className="text-[9px] font-black text-brand uppercase tracking-widest ml-4 mb-2 block text-center">Monto Total (Bs.)</label>
               <input required type="number" step="0.01" placeholder="0.00" value={form.total} onChange={e=>setForm({...form, total: e.target.value})} className="w-full bg-slate-900 text-white py-4 px-6 rounded-2xl text-2xl sm:text-3xl font-black text-center outline-none border-b-4 border-brand" />
@@ -510,6 +526,7 @@ const ClientDetailView = ({ client, sales, payments, getBalance, onPay }: any) =
                   </div>
                 )}
                 <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">{new Date(item.fecha).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })}</p>
+                {item.descripcion && <p className="text-[9px] font-bold text-brand italic mt-1">{item.descripcion}</p>}
               </div>
             </div>
             <p className={`font-black text-base ${item.entryType === 'payment' ? 'text-emerald-500' : 'text-slate-900'}`}>{item.entryType === 'payment' ? '+' : ''}{item.total || item.monto} <span className="text-[10px] text-slate-300">Bs.</span></p>

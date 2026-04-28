@@ -49,6 +49,7 @@ export type Sale = {
   id: string;
   client_id: string;
   guia?: string;
+  descripcion?: string;
   fecha: string;
   responsable: string;
   tipo_pago: 'efectivo' | 'qr' | 'mixto' | 'deuda';
